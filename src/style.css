@@ -3,3 +3,46 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+}
+
+.header {
+    padding: 10px;
+}
+
+.temp-btn-container {
+    margin-top: 20px;
+}
+
+.location-container {
+    margin-top: 20px;
+}
+
+.card-container {
+    display: flex;
+    gap: 20px;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+    box-shadow: 0 5px 10px black;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.weather-icon {
+    width: 125px;
+}
+
+.active {
+    display: block;
+}

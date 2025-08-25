@@ -10,26 +10,73 @@ body {
     flex-direction: column;
     justify-content: start;
     align-items: center;
+    background-color: #101828;
 }
 
-.header {
+header {
+    display: flex;
+    padding: 50px;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 100%;
+}
+
+.header-logo {
     padding: 10px;
 }
 
-.temp-btn-container {
-    margin-top: 20px;
+h1, .location {
+    color: white;
+}
+
+h1 {
+    letter-spacing: 2px;
+}
+
+
+.search-container {
+    display: flex;
+    gap: 15px;
+    align-items: center;
 }
 
 .location-container {
     margin-top: 20px;
 }
+#search {
+    padding: 10px;
+    border-radius: 5px;
+    width: 350px;
+    border: none;
+
+}
+
+#go, #toggle-temp {
+    padding: 10px;
+    border: none;
+    box-shadow: 0 5px 10px black;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+#toggle-temp {
+    background-color: rgb(220, 158, 44);
+}
+
+.main-card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 25px;
+}
 
 .card-container {
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
 }
 
-.card {
+.card, .main-card {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -37,12 +84,76 @@ body {
     box-shadow: 0 5px 10px black;
     padding: 20px;
     border-radius: 10px;
+    background-color: white;
 }
+
+.main-card {
+    gap: 20px;
+}
+
+.main-card-wrapper {
+    display: flex;
+    gap: 20px;
+}
+
+.today-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+}
+
+.today {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.right-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.date, .temp, .minTemp, .maxTemp {
+    width: 100%;
+    border-bottom: 1px solid rgb(160, 158, 158);
+}
+
+.weekday-main {
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: 2px;
+}
+
+.weekDay, .location {
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 2px;
+    font-size: 20px;
+    letter-spacing: 2px;
+}
+
+
 
 .weather-icon {
     width: 125px;
+    height: 50%;
+    margin-bottom: 20px;
 }
 
-.active {
-    display: block;
+.weather-icon-main {
+    width: 200px;
 }
+
+.temp-btn-container, .main-card-container, .card-container {
+    visibility: hidden;
+}
+
+
+.active {
+    display: flex;
+    visibility: visible;
+}
+

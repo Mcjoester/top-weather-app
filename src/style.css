@@ -16,10 +16,18 @@ body {
 header {
     display: flex;
     padding: 50px;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 50px;
     align-items: center;
     width: 100%;
 }
+
+.main-header {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
+
 
 .header-logo {
     padding: 10px;
@@ -72,6 +80,7 @@ h1 {
 
 .card-container {
     display: flex;
+    justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
 }
@@ -135,8 +144,6 @@ h1 {
     letter-spacing: 2px;
 }
 
-
-
 .weather-icon {
     width: 125px;
     height: 50%;
@@ -146,11 +153,6 @@ h1 {
 .weather-icon-main {
     width: 200px;
 }
-
-.temp-btn-container, .main-card-container, .card-container {
-    visibility: hidden;
-}
-
 
 .active {
     display: flex;

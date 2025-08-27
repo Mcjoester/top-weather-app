@@ -67,69 +67,144 @@ function parseWeatherData(data) {
     };
   }
 
-  function updateCards(weatherData, currentData) {
-    const mainCard = document.querySelector('.main-card');
-    const cards = document.querySelectorAll('.card');
+  function createTempBtn() {
+    const headerRight = document.querySelector('.header-right');
 
-    const today = weatherData[0];
-    const currentConditionsData = currentData;
-    if (mainCard && today && currentConditionsData) {
-        mainCard.querySelector('.weather-icon-main').src =
-            `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/refs/heads/main/SVG/1st%20Set%20-%20Color/${currentConditionsData.icon}.svg`;
-        mainCard.querySelector('.weekday-main').textContent = `${today.dayOfWeek}`;    
-        mainCard.querySelector('.date').textContent = `Date: ${today.date}`;
-        mainCard.querySelector('.temp').textContent =
-            `Temperature: ${currentUnit === 'F' ? today.tempF + '°F' : today.tempC + '°C'}`;
-        mainCard.querySelector('.minTemp').textContent =
-            `Low: ${currentUnit === 'F' ? today.minTemp + '°F' : today.minTempC + '°C'}`;
-        mainCard.querySelector('.maxTemp').textContent =
-            `High: ${currentUnit === 'F' ? today.maxTemp + '°F' : today.maxTempC + '°C'}`;
-    }
+    const tempBtnContainer = document.createElement('div');
+    const tempBtn = document.createElement('button');
 
-    weatherData.slice(1).forEach((day, index) => {
-        if (cards[index]) {
-            cards[index].querySelector('.weather-icon').src = `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/refs/heads/main/SVG/1st%20Set%20-%20Color/${day.icon}.svg`;
-            cards[index].querySelector('.weekDay').textContent = `${day.dayOfWeek}`;
-            cards[index].querySelector('.date').textContent = `Date: ${day.date}`;
-            cards[index].querySelector('.minTemp').textContent = `Low: ${currentUnit === 'F' ? day.minTemp + '°F' : day.minTempC + '°C'}`;
-            cards[index].querySelector('.maxTemp').textContent = `High: ${currentUnit === 'F' ? day.maxTemp + '°F' : day.maxTempC + '°C'}`;
-        }
+    tempBtnContainer.className = 'temp-btn-container';
+    tempBtn.id = 'toggle-temp';
+    tempBtn.textContent = 'Switch to °C';
+
+    tempBtnContainer.appendChild(tempBtn);
+    headerRight.appendChild(tempBtnContainer);
+
+    tempBtn.addEventListener('click', () => {
+      currentUnit = currentUnit === 'F' ? 'C' : 'F';
+      renderMainCard(parsedWeatherData, parsedTodayWeatherData);
+      renderWeatherCards(parsedWeatherData);
+      tempBtn.textContent = currentUnit === 'F' ? 'Switch to °C' : 'Switch to °F';
     });
   }
 
+  function renderLocationSpan(location) {
+    const locationContainer = document.querySelector('.location-container');
+    locationContainer.textContent = '';
+    const locationSpan = createSpan(location, 'location');
+
+    locationContainer.appendChild(locationSpan);
+}
+
+function renderMainCard(weatherData, currentData) {
+  const mainCardContainer = document.querySelector('.main-card-container');
+  mainCardContainer.textContent = '';
+
+  const mainCard = createDiv('main-card');
+  const todayContainer = createDiv('today-container');
+  const todayDay = createSpan('Today', 'today');
+  const today = weatherData[0];
+  const currentConditionsData = currentData;
+  
+  const mainCardWrapper = createDiv('main-card-wrapper');
+
+  const leftCard = createDiv('left-card');
+  const icon = document.createElement('img');
+  icon.className = 'weather-icon-main';
+  icon.src = `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/refs/heads/main/SVG/1st%20Set%20-%20Color/${currentConditionsData.icon}.svg`;
+
+  const rightCard = createDiv('right-card');
+  const weekday = createSpan(`${today.dayOfWeek}`, 'weekday-main');
+  const date = createSpan(`${today.date}`, 'date');
+  const temp = createSpan(`Temperature: ${currentUnit === 'F' ? today.tempF + '°F' : today.tempC + '°C'}`, 'temp');
+  const minTemp = createSpan(`Low: ${currentUnit === 'F' ? today.minTemp + '°F' : today.minTempC + '°C'}`, 'minTemp');
+  const maxTemp = createSpan(`High: ${currentUnit === 'F' ? today.maxTemp + '°F' : today.maxTempC + '°C'}`, 'maxTemp');
+
+  mainCardContainer.appendChild(mainCard);
+  mainCard.appendChild(todayContainer);
+  todayContainer.appendChild(todayDay);
+
+  mainCard.appendChild(mainCardWrapper);
+
+  mainCardWrapper.appendChild(leftCard);
+  leftCard.appendChild(icon);
+
+  mainCardWrapper.appendChild(rightCard);
+  rightCard.appendChild(weekday);
+  rightCard.appendChild(date);
+  rightCard.appendChild(temp);
+  rightCard.appendChild(minTemp);
+  rightCard.appendChild(maxTemp);
+}
+
+function renderWeatherCards(weatherData) {
+  const cardContainer = document.querySelector('.card-container');
+  cardContainer.textContent = '';
+
+  weatherData.slice(1).forEach(day => {
+    const card = createCard(day);
+    cardContainer.appendChild(card);
+  });
+}
+  
+function createCard(day) {
+  const card = createDiv('card');
+
+  const weatherIcon = document.createElement('img');
+  weatherIcon.className = 'weather-icon';
+  weatherIcon.src = `https://raw.githubusercontent.com/visualcrossing/WeatherIcons/refs/heads/main/SVG/1st%20Set%20-%20Color/${day.icon}.svg`;
+
+  const weekDay = createSpan(`${day.dayOfWeek}`, 'weekDay');
+  const date = createSpan(`${day.date}`, 'date');
+  const minTemp = createSpan(`Low: ${currentUnit === 'F' ? day.minTemp + '°F' : day.minTempC + '°C'}`, 'minTemp');
+  const maxTemp = createSpan(`High: ${currentUnit === 'F' ? day.maxTemp + '°F' : day.maxTempC + '°C'}`, 'maxTemp');
+
+  card.appendChild(weatherIcon);
+  card.appendChild(weekDay);
+  card.appendChild(date);
+  card.appendChild(minTemp);
+  card.appendChild(maxTemp);
+
+  return card;
+}
+
+function createDiv(className = '') {
+  const div = document.createElement('div');
+  if (className) div.className = className;
+  return div;
+}
+
+function createSpan(text, className = '') {
+  const span = document.createElement('span');
+  span.textContent = text;
+  if (className) span.className = className;
+  return span;
+}
 
 document.getElementById('go').addEventListener('click', async () => {
-    const location = document.getElementById('search').value;
-    const rawData = await fetchWeather(location);
-    const searchInput = document.getElementById('search');
+  const searchInput = document.getElementById('search');
+  if (searchInput.value.length === 0) return;
 
-    const buttonContainer = document.querySelector('.temp-btn-container');
-    const mainCardContainer = document.querySelector('.main-card-container');
-    const cardContainer = document.querySelector('.card-container');
+  const location = document.getElementById('search').value;
+  const rawData = await fetchWeather(location);
+  const headerRight = document.querySelector('.header-right');
+  const headerRightDivs = headerRight.querySelectorAll('div').length;
+  console.log(`header right divs: ${headerRightDivs}`);
 
+  if (!rawData) return;
 
-    if (!rawData) return;
+  parsedWeatherData = parseWeatherData(rawData);
+  parsedTodayWeatherData = parseCurrentConditionsData(rawData);
 
-    parsedWeatherData = parseWeatherData(rawData);
-    parsedTodayWeatherData = parseCurrentConditionsData(rawData);
-    const city = getLocation(rawData);
-    const address = document.querySelector('.location');
+if (headerRightDivs === 0) {
+  createTempBtn();
+}
 
-    updateCards(parsedWeatherData, parsedTodayWeatherData);
-    
-    address.textContent = `${city.address}`;
-    console.log(parsedWeatherData);
-    searchInput.value = '';
-    buttonContainer.classList.add('active');
-    mainCardContainer.classList.add('active');
-    cardContainer.classList.add('active');
-    
-});
+  renderLocationSpan(location);
+  renderMainCard(parsedWeatherData, parsedTodayWeatherData);
+  renderWeatherCards(parsedWeatherData);
 
-document.getElementById('toggle-temp').addEventListener('click', () => {
-  currentUnit = currentUnit === 'F' ? 'C' : 'F';
-  updateCards(parsedWeatherData, parsedTodayWeatherData);
-  document.getElementById('toggle-temp').textContent = currentUnit === 'F' ? 'Switch to °C' : 'Switch to °F';
+  searchInput.value = '';
 });
 
 

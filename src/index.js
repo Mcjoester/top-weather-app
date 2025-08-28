@@ -61,12 +61,6 @@ function parseWeatherData(data) {
     return formattedDate;
   }
 
-  function getLocation(data) {
-    return {
-        address: data.resolvedAddress,
-    };
-  }
-
   function createTempBtn() {
     const headerRight = document.querySelector('.header-right');
 
@@ -199,7 +193,6 @@ document.getElementById('go').addEventListener('click', async () => {
 if (headerRightDivs === 0) {
   createTempBtn();
 }
-
   renderLocationSpan(location);
   renderMainCard(parsedWeatherData, parsedTodayWeatherData);
   renderWeatherCards(parsedWeatherData);

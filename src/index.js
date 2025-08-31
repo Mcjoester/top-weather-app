@@ -36,6 +36,10 @@ class WeatherParser {
   static parseCurrentConditions(data) {
     return data.currentConditions;
   }
+
+  static parseLocation(data) {
+    return data.resolvedAddress;
+  }
 }
 
 // Utilities
@@ -69,10 +73,10 @@ class WeatherUI {
     this.currentUnit = this.currentUnit === "F" ? "C" : "F";
   }
 
-  renderLocation(location) {
+  renderLocation(resolvedLocation) {
     const locationContainer = document.querySelector('.location-container');
     locationContainer.textContent = '';
-    locationContainer.appendChild(this.createSpan(location, "location"));
+    locationContainer.appendChild(this.createSpan(resolvedLocation, "location"));
   }
 
   renderMainCard(forecast, currentData) {
@@ -145,6 +149,14 @@ class WeatherUI {
     headerRight.appendChild(btn);
   }
 
+  convertTemp(forecast) {
+    const today = forecast[0];
+    const rightCard = document.querySelector('.right-card');
+    const mainTemp = rightCard.querySelector('.temp');
+
+    mainTemp.textContent = `Temperature: ${this.formatTemp(today.tempF, today.tempC)}`;
+  }
+
   // Helpers
   formatTemp(f, c) {
     return this.currentUnit === "F" ? `${f}°F` : `${c}°C`;
@@ -192,12 +204,14 @@ class WeatherApp {
 
   async loadWeather(location) {
     const rawData = await this.service.fetchWeather(location);
+    console.log(rawData);
     if (!rawData) return;
 
     this.forecast = WeatherParser.parseForecast(rawData);
     this.currentConditions = WeatherParser.parseCurrentConditions(rawData);
+    this.resolvedAddress = WeatherParser.parseLocation(rawData);
 
-    this.ui.renderLocation(location);
+    this.ui.renderLocation(this.resolvedAddress);
     this.ui.renderMainCard(this.forecast, this.currentConditions);
     this.ui.renderWeatherCards(this.forecast);
     this.ui.renderTempToggleButton(() => {
